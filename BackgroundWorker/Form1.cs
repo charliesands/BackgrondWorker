@@ -31,28 +31,7 @@ namespace BackgroundWorker
             }
         }
 
-        /// <summary>
-        /// Clicking the Go button starts wasting CPU cycles for 10 seconds
-        /// </summary>
-        private void goButton_Click(object sender, EventArgs e)
-        {
-            goButton.Enabled = false;
-            if (!useBackgroundWorkerCheckbox.Checked)
-            {
-                // If we're not using the background worker, just start wasting CPU cycles
-                for (int i = 1; i <= 100; i++)
-                {
-                    WasteCPUCycles();
-                    progressBar1.Value = 1;
-                }
-                goButton.Enabled = true;
-            }else {
-                    cancelButton.Enabled=true;
-                    // If we are using the background worker, use its RunWorkerAsync()
-                    // to tell it to start its work
-                    backgroundWorker1.RunWorkerAsync(new Guy("Bob", 37, 146));
-                }
-            }
+      
 
         /// <summary>
         /// The BackgroundWorker object runs its DoWork event handler in the background
@@ -77,14 +56,48 @@ namespace BackgroundWorker
             }
         }
 
+        /// <summary>
+        /// BackgroundWorker fires its ProgressChanged event when the worker thread reports progress
+        /// </summary>
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-
+            progressBar1.Value = e.ProgressPercentage;
         }
 
+        /// <summary>
+        /// BackgroundWorker fires its RunWorkerCompleted event when its work is done (or cancelled)
+        /// </summary>
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            goButton.Enabled = true;
+            cancelButton.Enabled = false;
+        }
 
+        private void goButton_Click_1(object sender, EventArgs e)
+        {
+            goButton.Enabled = false;
+            if (!useBackgroundWorkerCheckbox.Checked)
+            {
+                // If we're not using the background worker, just start wasting CPU cycles
+                for (int i = 1; i <= 100; i++)
+                {
+                    WasteCPUCycles();
+                    progressBar1.Value = 1;
+                }
+                goButton.Enabled = true;
+            }
+            else
+            {
+                cancelButton.Enabled = true;
+                // If we are using the background worker, use its RunWorkerAsync()
+                // to tell it to start its work
+                backgroundWorker1.RunWorkerAsync(new Guy("Bob", 37, 146));
+            }
+        }
+
+        private void cancelButton_Click_1(object sender, EventArgs e)
+        {
+            backgroundWorker1.CancelAsync();
         }
     }
 }

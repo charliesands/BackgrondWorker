@@ -53,6 +53,7 @@
             this.goButton.TabIndex = 1;
             this.goButton.Text = "Go!";
             this.goButton.UseVisualStyleBackColor = true;
+            this.goButton.Click += new System.EventHandler(this.goButton_Click_1);
             // 
             // cancelButton
             // 
@@ -62,6 +63,7 @@
             this.cancelButton.TabIndex = 2;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click_1);
             // 
             // progressBar1
             // 
